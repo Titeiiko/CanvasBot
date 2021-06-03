@@ -9,8 +9,8 @@ This would install all the required modules in requirements.txt so the bot can f
 
 c) Type in console, "python main.py" for the bot to work. 
 
- ==========
+
+
 =   Other Info   =
- ==========
 Discord: https://discord.gg/8DPQhMpYrr
 Github (for bot):  
