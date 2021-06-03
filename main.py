@@ -3,8 +3,14 @@ import discord
 from discord.ext import commands
 import urllib.request
 
+#CONFIG
+#====== EDIT YOUR VARS HERE!
+adminChan = insert admin channel id here #add discord id to admins channel
+prefix = "insert command prefix" #Prefix of the discord bot
+botid = "insert bot id here"
+#=====
 
-bot = commands.Bot(command_prefix="p.")
+bot = commands.Bot(command_prefix=str(prefix))
 image = Image.open("Canvas.png")
 
 #Variable Gathering
@@ -15,10 +21,14 @@ RGBimage = image.convert('RGB') #Gathers the RGB version of it
 print('bot is awake!')
 
 @bot.command()
-async def help(ctx, xcoord: int, ycoord: int):
-    embed = discord.Embed(title="Canvas", description="", color = 222222)  #,color=Hex code
-    embed.set_image(url = 'attachment://resized_image.png')
-    await ctx.send(file = file, embed=embed)
+async def assist(ctx):
+    embed = discord.Embed(title="Help Assistance!", description="```c!canvas```", color=0x7be5c2)
+    embed.add_field(name="Canvas Prefix", value=str(prefix), inline=True)
+    embed.add_field(name="Commands", value="canvas - Shows canvas. \n art (x) (y) (discord url) - place artwork onto it.", inline=True)
+    embed.add_field(name="Github", value="https://github.com/Titeiiko/CanvasBot", inline=True)
+    await ctx.send(embed=embed)
+
+
 
 @bot.command()
 async def place(ctx, xcoord: int, ycoord: int):
@@ -39,7 +49,7 @@ async def place(ctx, xcoord: int, ycoord: int):
     RGBimage.save('Canvas.png')
 
 @bot.command()
-async  def art(ctx, xcoord: int, ycoord: int, url: str):
+async def art(ctx, xcoord: int, ycoord: int, url: str):
     if xcoord > ImageWidth:
         await ctx.send("Woah! I can't place a pixel right there!")
         stop
@@ -72,7 +82,16 @@ async  def art(ctx, xcoord: int, ycoord: int, url: str):
         stop
     RGBimage.paste(tempimage, (xcoord, ycoord))
     RGBimage.save('Canvas.png')
-    await ctx.send("Your image has been successfully placed!")
+
+    author = ctx.message.author
+
+    file = discord.File("temporarily.png", filename="temporarily.png")
+    channel = bot.get_channel(int(adminChan))
+    embed = discord.Embed(title="Canvas Update", description="User: " + str(author) + " has updated the canvas with this artwork.")
+    embed.set_image(url='attachment://temporarily.png')
+    await channel.send(file = file, embed=embed)
+
+    await ctx.send("Your image has been successfully placed! To see it, do: **" + str(prefix) + "canvas**")
 
 
 @bot.command()
@@ -89,5 +108,13 @@ async def canvas(ctx):
     embed.set_image(url = 'attachment://resized_image.png')
     await ctx.send(file = file, embed=embed)
 
+#===
+#Events
+#===
 
-bot.run("")
+async def on_ready():
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='Event Handlers'))
+    print("the bot is online!")
+
+bot.run(str(botid))
+
