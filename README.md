@@ -15,4 +15,4 @@ c) Type in console, "python main.py" for the bot to work.
 
 Discord: https://discord.gg/8DPQhMpYrr
 
-Github (for bot):  
+Github (for bot):  https://github.com/Titeiiko/CanvasBot
