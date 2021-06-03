@@ -12,5 +12,7 @@ c) Type in console, "python main.py" for the bot to work.
 
 
 =   Other Info   =
+
 Discord: https://discord.gg/8DPQhMpYrr
+
 Github (for bot):  
